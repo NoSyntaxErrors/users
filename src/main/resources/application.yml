@@ -1,0 +1,23 @@
+spring:
+  datasource:
+
+    url: jdbc:postgresql://localhost:5432/users
+    #url: jdbc:h2:file:./src/main/resources/database/users
+    username: postgres
+    password: password
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/users
+    user: postgres
+    password: password
+    default-schema: public
+
+
+jwt:
+  secret-key: ZnJhbmNpc2NvYW5kcmVzc2FsYXNiYXJyYWxlcw==
+
+aes:
+  secret-key: a2F0aGVyaW5lbWFjYXJlbmFi
+
+
