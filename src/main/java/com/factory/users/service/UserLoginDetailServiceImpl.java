@@ -1,4 +1,4 @@
-package com.factory.users.security;
+package com.factory.users.service;
 
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.UserRegistered;

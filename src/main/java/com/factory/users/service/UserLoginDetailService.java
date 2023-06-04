@@ -1,4 +1,4 @@
-package com.factory.users.security;
+package com.factory.users.service;
 
 import org.springframework.security.core.userdetails.User;
 

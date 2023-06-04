@@ -9,7 +9,6 @@ import com.factory.users.repositories.PhoneRepository;
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.Phone;
 import com.factory.users.repositories.entities.UserRegistered;
-import com.factory.users.security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

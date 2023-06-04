@@ -1,4 +1,4 @@
-package com.factory.users.security;
+package com.factory.users.service;
 
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.UserRegistered;
@@ -8,7 +8,6 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;

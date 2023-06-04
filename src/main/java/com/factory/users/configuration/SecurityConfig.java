@@ -1,7 +1,7 @@
 package com.factory.users.configuration;
 
 import com.factory.users.security.JwtTokenFilter;
-import com.factory.users.security.UserLoginDetailService;
+import com.factory.users.service.UserLoginDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
