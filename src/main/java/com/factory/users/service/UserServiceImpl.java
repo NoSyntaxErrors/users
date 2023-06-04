@@ -13,7 +13,6 @@ import com.factory.users.security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -84,7 +83,6 @@ public class UserServiceImpl implements UserService {
                 .id(userRegistered.getId())
                 .email(userRegistered.getEmail())
                 .name(userRegistered.getName())
-                .password(userRegistered.getPassword())
                 .phones(phones)
                 .token(getTokenJwt(userRegistered))
                 .build();

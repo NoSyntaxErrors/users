@@ -40,17 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http = http
                 .exceptionHandling()
                 .authenticationEntryPoint(
-                        (request, response, ex) -> {
-                            response.sendError(
-                                    401,
-                                    ex.getMessage()
-                            );
-                        }
+                    (request, response, ex) -> response.sendError(401, ex.getMessage())
                 )
                 .and();
 
         http.authorizeRequests()
-                .antMatchers("/sign-up").permitAll().anyRequest().authenticated();
+                .antMatchers("/sign-up").permitAll()
+                .antMatchers("/h2-console").permitAll()
+                .anyRequest().authenticated();
 
         http.addFilterBefore(
                 jwtTokenFilter,

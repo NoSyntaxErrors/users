@@ -19,7 +19,7 @@ CREATE TABLE public.phone
     id int8 NOT NULL DEFAULT nextval('phone_sequence'),
     city_code integer,
     country_code character varying(255) ,
-    "number" integer,
+    number integer,
     user_registered_id uuid,
     CONSTRAINT phone_pkey PRIMARY KEY (id)
     --CONSTRAINT phone_user_registered_key FOREIGN KEY (user_registered_id) REFERENCES public.user_registered (id)
