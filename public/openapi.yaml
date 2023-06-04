@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: User Authentication Service
+  description: Description*
+  contact:
+    email: fsalaslazcano@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: User
+    description: Operations about user
+paths:
+
+  '/user/sign-up':
+    post:
+      tags:
+        - User
+      summary: 'Create user into the system'
+      description: 'Endpoint to create users'
+      operationId: 'createUser'
+      requestBody:
+        description: 'Create user object'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: 'user created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '409':
+          description: 'user already exist'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 'endpoint doesnt exist'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 'internal error'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/user/login':
+    get:
+      tags:
+        - User
+      summary: 'Log user into the system'
+      description: 'Endpoint to login user'
+      operationId: 'loginUser'
+      parameters:
+        - name: Authorization
+          in: header
+          description: The user token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'user successful log in'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponse'
+        '409':
+          description: 'user already exist'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 'endpoint doesnt exist'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 'internal error'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Francisco Eduardo Salas Lazcano
+        email:
+          type: string
+          example: fsalaslazcano@gmail.com
+          format: mail
+        password:
+          type: string
+          example: 'a2asfGfdfdf4'
+          format: '^((?:\D*\d\D*){1,2})$'
+          minLength: 8
+          maxLength: 12
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+    UserResponse:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        token:
+          type: string
+        isActive:
+          type: boolean
+    Phone:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+          example: 945836647
+        citycode:
+          type: integer
+          format: int32
+          example: 2
+        country:
+          type: string
+          example: '+56'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+              code:
+                type: integer
+                format: int32
+              detail:
+                type: string
+    UserLoginResponse:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - $ref: '#/components/schemas/UserResponse'
+    
+    
+  

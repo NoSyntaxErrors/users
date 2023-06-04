@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "039e592e-b040-48df-8dc0-36ba67e0e7df",
+		"name": "Users- Francisco Salas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Sign-Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Francisco Salas Lazcano\",\r\n    \"email\": \"fsalaslazcano@gmail.com\",\r\n    \"password\": \"Francisco95\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 87650009,\r\n            \"citycode\": 7,\r\n            \"countrycode\": \"25\"\r\n        },{\r\n            \"number\": 87650009,\r\n            \"citycode\": 7,\r\n            \"countrycode\": \"25\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/sign-up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
