@@ -1,4 +1,4 @@
-package com.factory.users.configuration.converter;
+package com.factory.users.converter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
