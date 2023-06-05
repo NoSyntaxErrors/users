@@ -1,10 +1,12 @@
 package com.factory.users.service;
 
+import com.factory.users.model.exception.UnauthorizedAccessException;
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.UserRegistered;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Component
@@ -58,30 +53,24 @@ public class JwtTokenUtil {
 
     public User getUserFromJwt(String token){
 
-        try{
+        Jwt jwt = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8))).build().parse(token);
+        Claims claims = (Claims) jwt.getBody();
 
-            Jwt jwt = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8))).build().parse(token);
-            Claims claims = (Claims) jwt.getBody();
+        String password = claims.get("p4ssword", String.class);
+        String email = claims.getAudience();
 
-            String password = claims.get("p4ssword", String.class);
-            String email = claims.getAudience();
+        UserRegistered userRegistered = userRegisteredRepository.getUserRegisteredByEmail(email);
+        String desEncryptedPassword = new String(Base64.getDecoder().decode(password.getBytes(StandardCharsets.UTF_8)));
 
-            UserRegistered userRegistered = userRegisteredRepository.getUserRegisteredByEmail(email);
-            String desEncryptedPassword = new String(Base64.getDecoder().decode(password.getBytes(StandardCharsets.UTF_8)));
+        if(desEncryptedPassword.equalsIgnoreCase(userRegistered.getPassword())){
 
-            if(desEncryptedPassword.equalsIgnoreCase(userRegistered.getPassword())){
-
-                return new User(userRegistered.getEmail(), "", Collections.emptyList());
-            }else{
-                throw new RuntimeException();
-            }
-
-        } catch (ExpiredJwtException | MalformedJwtException | SignatureException | IllegalArgumentException ex){
-            throw ex;
+            return new User(userRegistered.getEmail(), "", Collections.emptyList());
+        }else{
+            throw new UnauthorizedAccessException("Usuario y/o contraseña invalidos");
         }
 
     }
-
+/**
     @Deprecated
     private String getEncryptedPassword(String password) throws NoSuchAlgorithmException, NoSuchPaddingException,
             InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -101,5 +90,5 @@ public class JwtTokenUtil {
 
         return new String(cipher.doFinal(encryptedPassword.getBytes()));
     }
-
+**/
 }

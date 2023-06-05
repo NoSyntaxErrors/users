@@ -60,7 +60,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean validateJwt(String header, HttpServletResponse response) {
+    public boolean validateJwt(String header, HttpServletResponse response) {
 
         if (header == null || !header.startsWith("Bearer ")) {
             return false;

@@ -16,6 +16,9 @@ public class JwtConverter implements Converter<String, LoginBody> {
 
         DecodedJWT jwt = JWT.decode(source.split("Bearer ")[1].trim());
 
-        return LoginBody.builder().username(jwt.getAudience().get(0)).password(jwt.getClaim("p4ssword").asString()).build();
+        return LoginBody.builder()
+                .username(jwt.getAudience().get(0))
+                .password(jwt.getClaim("p4ssword").asString())
+            .build();
     }
 }

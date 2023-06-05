@@ -1,8 +1,9 @@
-package com.factory.users.api;
+package com.factory.users.model.exception;
 
 import com.factory.users.model.ErrorResponse;
-import com.factory.users.model.exception.ResourceException;
-import com.factory.users.model.exception.UnauthorizedAccess;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -68,9 +69,10 @@ public class ControllerExceptionHandler {
         return getExceptionErrorMessage(e, CONFLICT);
     }
 
-    @ExceptionHandler(value = {UnauthorizedAccess.class})
+    @ExceptionHandler(value = {UnauthorizedAccessException.class, ExpiredJwtException.class,
+            MalformedJwtException.class, SignatureException.class, IllegalArgumentException.class})
     @ResponseStatus(value = UNAUTHORIZED)
-    public ErrorResponse unauthorizedAccess(UnauthorizedAccess e) {
+    public ErrorResponse unauthorizedAccess(UnauthorizedAccessException e) {
 
         log.error("ControllerExceptionHandler - UnauthorizedAccess", e);
 

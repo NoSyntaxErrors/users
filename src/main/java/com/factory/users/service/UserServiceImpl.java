@@ -5,6 +5,7 @@ import com.factory.users.model.UserLoginResponse;
 import com.factory.users.model.UserSignUpRequest;
 import com.factory.users.model.UserSignUpResponse;
 import com.factory.users.model.exception.ResourceException;
+import com.factory.users.model.exception.UnauthorizedAccessException;
 import com.factory.users.repositories.PhoneRepository;
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.Phone;
@@ -30,9 +31,8 @@ public class UserServiceImpl implements UserService {
 
         UserRegistered userAlreadyExists = userRegisteredRepository.getUserRegisteredByEmail(userSignUpRequest.getEmail());
 
-
         if (userAlreadyExists != null) {
-            throw new ResourceException();
+            throw new ResourceException("User(email) is already registered");
 
         } else {
             UUID uuid = UUID.randomUUID();
@@ -72,25 +72,29 @@ public class UserServiceImpl implements UserService {
 
         UserRegistered userRegistered = userRegisteredRepository.getUserRegisteredByEmailAndPassword(loginBody.getUsername(),
                 new String(Base64.getDecoder().decode(loginBody.getPassword())));
-        List<Phone> phones = phoneRepository.getPhonesByUserRegisteredId(userRegistered.getId());
 
+        if (userRegistered == null) {
+            throw new UnauthorizedAccessException("Usuario y/o contraseña invalidos");
+        } else {
 
-        UserLoginResponse userLoginResponse = UserLoginResponse.builder()
-                .lastLogin(userRegistered.getLastLogin())
-                .created(userRegistered.getCreated())
-                .isActive(userRegistered.getIsActive())
-                .id(userRegistered.getId())
-                .email(userRegistered.getEmail())
-                .name(userRegistered.getName())
-                .phones(phones)
-                .token(getTokenJwt(userRegistered))
-                .build();
+            List<Phone> phones = phoneRepository.getPhonesByUserRegisteredId(userRegistered.getId());
 
-        userRegistered.setLastLogin(LocalDateTime.now());
-        userRegisteredRepository.save(userRegistered);
+            UserLoginResponse userLoginResponse = UserLoginResponse.builder()
+                    .lastLogin(userRegistered.getLastLogin())
+                    .created(userRegistered.getCreated())
+                    .isActive(userRegistered.getIsActive())
+                    .id(userRegistered.getId())
+                    .email(userRegistered.getEmail())
+                    .name(userRegistered.getName())
+                    .phones(phones)
+                    .token(getTokenJwt(userRegistered))
+                    .build();
 
-        return userLoginResponse;
+            userRegistered.setLastLogin(LocalDateTime.now());
+            userRegisteredRepository.save(userRegistered);
 
+            return userLoginResponse;
+        }
     }
 
     private String getTokenJwt(UserRegistered userRegistered) {

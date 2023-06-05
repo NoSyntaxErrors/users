@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http = http
                 .exceptionHandling()
                 .authenticationEntryPoint(
-                    (request, response, ex) -> response.sendError(401, ex.getMessage())
+                        (request, response, ex) -> response.sendError(401, ex.getMessage())
                 )
                 .and();
 

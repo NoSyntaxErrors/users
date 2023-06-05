@@ -1,5 +1,6 @@
 package com.factory.users.service;
 
+import com.factory.users.model.exception.UnauthorizedAccessException;
 import com.factory.users.repositories.UserRegisteredRepository;
 import com.factory.users.repositories.entities.UserRegistered;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,10 @@ public class UserLoginDetailServiceImpl implements UserLoginDetailService {
 
         UserRegistered userRegistered = userRegisteredRepository.getUserRegisteredByEmail(email);
 
-        return new User(userRegistered.getEmail(), userRegistered.getPassword(), Collections.emptyList());
+        if (userRegistered == null) {
+            throw new UnauthorizedAccessException("Usuario y/o contraseña invalidos");
+        } else {
+            return new User(userRegistered.getEmail(), userRegistered.getPassword(), Collections.emptyList());
+        }
     }
 }
