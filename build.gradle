@@ -52,7 +52,9 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					"com/factory/users/configuration/*",
 					"com/factory/users/model/*",
-					"com/factory/users/repositories/entities*"
+					"com/factory/users/repositories/entities*",
+					"com/factory/users/UsersApplication.*"
+
 			])
 		})
 	}
@@ -84,7 +86,8 @@ jacocoTestCoverageVerification {
 			fileTree(dir: it, exclude: [
 					"com/factory/users/configuration/*",
 					"com/factory/users/model/*",
-					"com/factory/users/repositories/entities*"
+					"com/factory/users/repositories/entities*",
+					"com/factory/users/UsersApplication.java"
 			])
 		})
 	}
