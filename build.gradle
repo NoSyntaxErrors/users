@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.12'
 	id 'io.spring.dependency-management' version '1.1.0'
 	//id "org.sonarqube" version "3.5.0.2730"
-	//id 'jacoco'
+	id 'jacoco'
 }
 
 group = 'com.factory'
@@ -36,8 +36,63 @@ dependencies {
 
 }
 
-tasks.named('test') {
+test {
+	useJUnit()
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+
+}
+jacocoTestReport {
+	dependsOn test
+	reports.xml.required.set(true)
+	reports.html.required.set(true)
+
+	afterEvaluate {
+		classDirectories.setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/factory/users/configuration/*",
+					"com/factory/users/model/*",
+					"com/factory/users/repositories/entities*"
+			])
+		})
+	}
+}
+
+jacocoTestCoverageVerification {
+	dependsOn jacocoTestReport
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.8
+			}
+		}
+
+		rule {
+			limit {
+				counter = 'BRANCH'
+				minimum = 0.8
+			}
+			limit {
+				counter = 'LINE'
+				minimum = 0.8
+			}
+		}
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/factory/users/configuration/*",
+					"com/factory/users/model/*",
+					"com/factory/users/repositories/entities*"
+			])
+		})
+	}
+}
+
+jacoco {
+	toolVersion = "0.8.8"
+
 }
 
 configurations {

@@ -27,6 +27,9 @@ Actualmente está usando H2, pero se puede configurar y utilizar distintas base 
 
 Para correr esta APP, se levanta como una aplicación Java como se define al comienzo del **README.md**.
 
+## Flyway 
+
+El proyecto cuenta con una implementación básica de Flyway lo que permite versionar la base de datos, en la ruta src/main/resources/db.migration se encuentran los archivos SQL.
 
 ## Postman y Swagger
 
@@ -39,8 +42,6 @@ El proyecto además cuenta con el respecto archivo **openapi.yaml** el cual cuen
 La carpeta que contiene los test unitarios es: `users/src/test`
 
 La APP tiene el 80% de cobertura.
-
-Configuración del criterio de coverage en **gradle/sourceQA.gradle**
 
 Para revisar los reportes generados se debe ir a **build/reports/**.  Esta carpeta se genera cuando se compila
 o construye el proyecto.
